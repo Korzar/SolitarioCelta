@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Juego del solitario celta para TDW">
+        <meta name="author" content="bi0514">
+        <link rel="icon" href="#">
+        
+        <title>Solitario celta</title>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="lib/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="lib/css/bootstrap-theme.min.css">
+        <!-- jQuery library (necesario cargarla antes de bootstrap.min.js, ya que BS hace uso de jQuery) -->
+        <script src="lib/js/jquery.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="lib/js/bootstrap.min.js"></script>
+
+        <!-- Custom styles for this template -->
+        <link href="estilos.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Cargamos el script principal para controlar el juego y el del jQuery-knob -->
+        <script type="text/javascript" src="juego.js"></script>
+        <script type="text/javascript" src="lib/js/jquery.knob.js"></script>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="javascript:window.location.reload(true)">Solitario celta</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="javascript:juego.editar();">
+                                <span class="glyphicon glyphicon-move"></span> Situar
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:juego.jugar();">
+                                <span class="glyphicon glyphicon-play"></span> Jugar
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar estado</a>
+                        </li>
+                        <li>
+                            <a href="#"><span class="glyphicon glyphicon-cloud"></span> Registrar puntuación</a>
+                        </li>
+                        <li><a href="#">Usuario: Jugador</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                        <li id="tituloMenu">DATOS DEL JUEGO</li>
+                        <li class="nav-divider"></li>
+
+                        <li id="tituloPuntuacion">Puntuación</li>
+                        <li id="puntuacion">0</li>
+                        <li class="nav-divider"></li>
+
+                        <li id="tituloTiempo">Tiempo</li>
+                        <li id="cuentaAtras">00:00</li>
+                        <li class="nav-divider"></li>
+
+                        <li id="tituloOpciones">Opciones</li>
+                    </ul>
+                    <ul class="nav nav-sidebar">
+                        <li id="selectorEstiloJuego">
+                            <div class="btn-group" data-toggle="buttons">
+                                <a href="" class="btn btn-default active" data-toggle="selectorEstiloJuego">
+                                    <input type="radio" name="estiloJuego" value="central" checked>Central</a>
+                                <a href="" class="btn btn-default" data-toggle="selectorEstiloJuego">
+                                    <input type="radio" name="estiloJuego" value="aleatorio">Aleatorio</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-sidebar">
+                        <li class="temporizador">
+                            <input type="text" id="segundos" class="dial" data-width="150" data-min="0"
+                                   data-max="300" data-displayPrevious=false data-fgColor="#222222"
+                                   data-bgColor="slategray" value="">
+                        </li>
+                    </ul>
+                    <ul class="nav nav-sidebar">
+                        <li class="botonModal">
+                            <button type="button" class="btn btn-primary btn-large" data-toggle="modal"
+                                    data-target="#modalInstrucciones">Cómo jugar</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <h1 class="page-header">Panel de juego</h1>
+                    <div id="tablero" onclick="elegir(event)"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Bootstrap para las instrucciones de juego -->
+        <div id="modalInstrucciones" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Instrucciones</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <span class="ordinal">1º</span> Si desea jugar contrarreloj, seleccione un tiempo máximo para
+                            la partida utilizando el dial situado en la barra lateral o introduciendo un valor en
+                            segundos (haciendo click sobre la cifra).
+                        </p>
+                        <p class="text-warning"><small>ATENCIÓN: El tiempo máximo de una partida es de 300 segundos.</small></p>
+                        <p>
+                            <span class="ordinal">2º</span> Use el botón "Situar" si desea editar el tablero antes de comenzar a jugar.
+                            De lo contrario elija un tablero con hueco central o aleatorio y continúe al siguiente paso.
+                        </p>
+                        <p>
+                            <span class="ordinal">3º</span> ¡Pulse el botón "Jugar" para comenzar la partida!
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            var juego = new Juego(false);
+
+            // jQuery-knob
+            $(function() {
+                $(".dial").knob();
+            });
+        </script>
+
+    </body>
+</html>
